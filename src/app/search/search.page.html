@@ -1,0 +1,58 @@
+<ion-header>
+  <!-- <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="arrow-back"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      {{'Search'|translate}}
+    </ion-title>
+  </ion-toolbar> -->
+  <form #loginForm="ngForm" (ngSubmit)="getSearchData()" *ngIf="config.appNavigationTabs">
+    <ion-searchbar [(ngModel)]="search" name="search" placeholder="{{'Search'|translate}}"
+      (ionInput)="onChangeKeyword($event)">
+    </ion-searchbar>
+  </form>
+
+  <ion-toolbar *ngIf="!config.appNavigationTabs">
+    <ion-buttons slot="start">
+      <ion-back-button icon="arrow-back"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      {{'Search'|translate}}
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" routerLink="/cart" routerDirection="forward">
+        <ion-icon name="basket"></ion-icon>
+        <ion-badge color="secondary">{{shared.cartTotalItems()}}</ion-badge>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <form #loginForm="ngForm" (ngSubmit)="getSearchData()" *ngIf="!config.appNavigationTabs">
+    <ion-searchbar [(ngModel)]="search" name="search" placeholder="{{'Search'|translate}}"
+      (ionInput)="onChangeKeyword($event)">
+    </ion-searchbar>
+  </form>
+
+  <div class="list" *ngFor="let p of products">
+    <app-product [data]="p" [type]="'list'"></app-product>
+  </div>
+
+  <ion-list>
+    <ion-item *ngFor="let c of shared.allCategories" (click)="openProducts(c.id,c.name)">
+      <ion-avatar slot="start" class="animate-item delay-500ms">
+        <img src="{{config.imgUrl+c.image}}" />
+      </ion-avatar>
+      <ion-label class="ion-padding">
+        <ion-text>
+          <h2>{{c.name}}</h2>
+          <p>{{c.total_products}} {{'Products'| translate }}</p>
+        </ion-text>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

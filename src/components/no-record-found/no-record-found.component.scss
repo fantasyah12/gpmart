@@ -1,0 +1,19 @@
+.no-record-found-content {
+    width: 100%;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    text-align: center;
+    ion-row {
+        ion-col {
+            h4 {
+                font-size: 16px;
+                font-weight: bold;
+                margin-top: 2px;
+                margin-bottom: 6px;
+            }
+        }
+    }
+}

@@ -1,0 +1,8 @@
+<div class="no-record-found-content" *ngIf="data[0]==1 || data.length==0">
+  <ion-spinner *ngIf="data[0]==1"></ion-spinner>
+  <ion-row class="ion-no-padding" *ngIf="data.length==0">
+    <ion-col size="12" class="ion-no-padding">
+      <h4>{{'No Data Found'|translate}}</h4>
+    </ion-col>
+  </ion-row>
+</div>

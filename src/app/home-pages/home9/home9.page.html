@@ -1,0 +1,125 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-menu-button slot="start" *ngIf="!config.appNavigationTabs">
+      <ion-icon name="menu"></ion-icon>
+    </ion-menu-button>
+    <ion-title mode=ios>
+      {{config.appName|translate}}
+      <!-- <ion-img src="assets/logo_header.png" alt="logo"></ion-img> -->
+    </ion-title>
+    <ion-buttons slot="end" *ngIf="!config.appNavigationTabs">
+      <ion-button fill="clear" routerLink="/search" routerDirection="forward">
+        <ion-icon slot="icon-only" name="search"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" routerLink="/cart" routerDirection="forward">
+        <ion-icon name="basket"></ion-icon>
+        <ion-badge color="secondary">{{shared.cartTotalItems()}}</ion-badge>
+      </ion-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding-bottom">
+  <ion-row class="top-icon-header">
+    <ion-button fill="clear">
+      <ion-icon slot="start" name="apps"></ion-icon>
+      {{'Categories' | translate }}
+    </ion-button>
+    <ion-button id="second" fill="clear" (click)="openCategoryPage()">
+      <ion-icon slot="end" name="caret-forward"></ion-icon>
+      {{ 'Shop More' | translate }}
+    </ion-button>
+  </ion-row>
+  <!-- categories component -->
+  <app-categories [type]="'grid'"></app-categories>
+
+  <ion-segment [(ngModel)]="segments">
+    <ion-segment-button value="topSeller">{{ 'Top Seller' | translate }}</ion-segment-button>
+    <ion-segment-button value="deals">{{ 'Deals' | translate }} </ion-segment-button>
+    <ion-segment-button value="mostLiked"> {{ 'Most Liked' | translate }}</ion-segment-button>
+  </ion-segment>
+  <div [ngSwitch]="segments">
+
+    <!-- first swipe slider -->
+    <div *ngSwitchCase="'topSeller'" class="card-min-height">
+      <app-no-record-found [data]="shared.tab1" *ngIf="shared.tab1.length==0"></app-no-record-found>
+      <ion-slides [options]="sliderConfig" *ngIf="shared.tab1.length!=0">
+        <ion-slide *ngFor="let p of shared.tab1">
+          <app-product [data]="p" [type]="'normal'"></app-product>
+        </ion-slide>
+        <ion-slide>
+          <ion-button fill="clear" (click)="openProducts('top seller')"> {{'Shop More'| translate}}
+            <ion-icon name="caret-forward"></ion-icon>
+          </ion-button>
+        </ion-slide>
+      </ion-slides>
+    </div>
+
+    <!-- 2nd swipe slider -->
+    <div *ngSwitchCase="'deals'" class="card-min-height">
+      <app-no-record-found [data]="shared.tab2" *ngIf="shared.tab2.length==0"></app-no-record-found>
+      <ion-slides [options]="sliderConfig" *ngIf="shared.tab2.length!=0">
+        <ion-slide *ngFor="let p of shared.tab2">
+          <app-product [data]="p" [type]="'normal'"></app-product>
+        </ion-slide>
+        <ion-slide>
+          <ion-button fill="clear" (click)="openProducts('special')"> {{'Shop More'| translate}}
+            <ion-icon name="caret-forward"></ion-icon>
+          </ion-button>
+        </ion-slide>
+      </ion-slides>
+    </div>
+
+
+    <!-- 3rd swipe slider -->
+    <div *ngSwitchCase="'mostLiked'" class="card-min-height">
+      <app-no-record-found [data]="shared.tab3" *ngIf="shared.tab3.length==0"></app-no-record-found>
+      <ion-slides [options]="sliderConfig" *ngIf="shared.tab3.length!=0">
+        <ion-slide *ngFor="let p of shared.tab3">
+          <app-product [data]="p" [type]="'normal'"></app-product>
+        </ion-slide>
+        <ion-slide>
+          <ion-button fill="clear" (click)="openProducts('most liked')"> {{'Shop More'| translate}}
+            <ion-icon name="caret-forward"></ion-icon>
+          </ion-button>
+        </ion-slide>
+      </ion-slides>
+    </div>
+  </div>
+
+  <!-- For Vendor List -->
+  <!--<app-vendor-list></app-vendor-list>-->
+  <div class="card-min-height">
+    <ion-row class="top-icon-header">
+      <ion-button fill="clear">
+        <ion-icon slot="start" name="albums"></ion-icon>
+        {{'All Products' | translate }}
+      </ion-button>
+      <ion-button id="second" fill="clear" (click)="openProducts('top seller')">
+        <ion-icon slot="end" name="caret-forward"></ion-icon>
+        {{ 'Shop More' | translate }}
+      </ion-button>
+    </ion-row>
+    <app-no-record-found [data]="products" *ngIf="products.length==0"></app-no-record-found>
+    <ion-grid class="ion-no-padding">
+      <ion-row class="ion-no-padding">
+        <ion-col *ngFor="let p of products" size="6" class="ion-no-padding">
+          <app-product [data]="p" [type]="'normal'"></app-product>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+  <!-- infinite scroll -->
+  <ion-infinite-scroll #infinite (ionInfinite)="getProducts()">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+
+</ion-content>
+<ion-fab vertical="bottom" horizontal="end" *ngIf="scrollTopButton">
+  <ion-fab-button color="secondary" (click)="scrollToTop()">
+    <ion-icon name="arrow-up"></ion-icon>
+  </ion-fab-button>
+</ion-fab>

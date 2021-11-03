@@ -1,0 +1,122 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-menu-button slot="start" *ngIf="!config.appNavigationTabs">
+      <ion-icon name="menu"></ion-icon>
+    </ion-menu-button>
+    <ion-title mode=ios>
+      {{config.appName|translate}}
+      <!-- <ion-img src="assets/logo_header.png" alt="logo"></ion-img> -->
+    </ion-title>
+    <ion-buttons slot="end" *ngIf="!config.appNavigationTabs">
+      <ion-button fill="clear" routerLink="/search" routerDirection="forward">
+        <ion-icon slot="icon-only" name="search"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" routerLink="/cart" routerDirection="forward">
+        <ion-icon name="basket"></ion-icon>
+        <ion-badge color="secondary">{{shared.cartTotalItems()}}</ion-badge>
+      </ion-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [scrollEvents]="true" (ionScroll)="onScroll($event)" class="home-page-1 ion-padding-bottom">
+  <app-banner></app-banner>
+  <!-- Flash sale items products -->
+  <div class="module" *ngIf="shared.flashSaleProducts.length!=0">
+    <ion-row class="top-icon-header">
+      <ion-button fill="clear">
+        <ion-icon slot="start" name="time"></ion-icon>
+        {{'Flash Sale'|translate}}
+      </ion-button>
+    </ion-row>
+
+    <!-- recently viewed swipe slider -->
+    <ion-slides #recentSlider [options]="sliderConfig">
+      <ion-slide *ngFor="let p of shared.flashSaleProducts">
+        <app-product [data]="p" [type]="'flash'"></app-product>
+      </ion-slide>
+    </ion-slides>
+  </div>
+  <ion-segment [(ngModel)]="segments">
+    <ion-segment-button value="topSeller">{{ 'Top Seller' | translate }}</ion-segment-button>
+    <ion-segment-button value="deals">{{ 'Deals' | translate }} </ion-segment-button>
+    <ion-segment-button value="mostLiked"> {{ 'Most Liked' | translate }}</ion-segment-button>
+  </ion-segment>
+  <div [ngSwitch]="segments">
+
+    <!-- first swipe slider -->
+    <div *ngSwitchCase="'topSeller'" class="card-min-height">
+      <app-no-record-found [data]="shared.tab1" *ngIf="shared.tab1.length==0"></app-no-record-found>
+      <ion-slides [options]="sliderConfig" *ngIf="shared.tab1.length!=0">
+        <ion-slide *ngFor="let p of shared.tab1">
+          <app-product [data]="p" [type]="'normal'"></app-product>
+        </ion-slide>
+        <ion-slide>
+          <ion-button fill="clear" (click)="openProducts('top seller')"> {{'Shop More'| translate}}
+            <ion-icon name="caret-forward"></ion-icon>
+          </ion-button>
+        </ion-slide>
+      </ion-slides>
+    </div>
+
+    <!-- 2nd swipe slider -->
+    <div *ngSwitchCase="'deals'" class="card-min-height">
+      <app-no-record-found [data]="shared.tab2" *ngIf="shared.tab2.length==0"></app-no-record-found>
+      <ion-slides [options]="sliderConfig" *ngIf="shared.tab2.length!=0">
+        <ion-slide *ngFor="let p of shared.tab2">
+          <app-product [data]="p" [type]="'normal'"></app-product>
+        </ion-slide>
+        <ion-slide>
+          <ion-button fill="clear" (click)="openProducts('special')"> {{'Shop More'| translate}}
+            <ion-icon name="caret-forward"></ion-icon>
+          </ion-button>
+        </ion-slide>
+      </ion-slides>
+    </div>
+
+
+    <!-- 3rd swipe slider -->
+    <div *ngSwitchCase="'mostLiked'" class="card-min-height">
+      <app-no-record-found [data]="shared.tab3" *ngIf="shared.tab3.length==0"></app-no-record-found>
+      <ion-slides [options]="sliderConfig" *ngIf="shared.tab3.length!=0">
+        <ion-slide *ngFor="let p of shared.tab3">
+          <app-product [data]="p" [type]="'normal'"></app-product>
+        </ion-slide>
+        <ion-slide>
+          <ion-button fill="clear" (click)="openProducts('most liked')"> {{'Shop More'| translate}}
+            <ion-icon name="caret-forward"></ion-icon>
+          </ion-button>
+        </ion-slide>
+      </ion-slides>
+    </div>
+
+  </div>
+
+  <!-- recently view Heading -->
+  <ion-row *ngIf="shared.recentViewedProducts.length!=0" class="top-icon-header">
+    <ion-button fill="clear">
+      <ion-icon slot="start" name="list"></ion-icon>
+      {{'Recently Viewed'|translate}}
+    </ion-button>
+  </ion-row>
+
+  <!-- recently viewed swipe slider -->
+  <ion-slides #recentSlider [options]="sliderConfig">
+    <ion-slide *ngFor="let p of shared.recentViewedProducts">
+      <app-product [data]="p" [type]="'recent'"></app-product>
+    </ion-slide>
+  </ion-slides>
+
+  <!-- For Vendor List -->
+  <!--<app-vendor-list></app-vendor-list>-->
+
+  <!-- for scrollable segment and all products -->
+  <app-sliding-tabs [type]="'text'"></app-sliding-tabs>
+
+</ion-content>
+<ion-fab vertical="bottom" horizontal="end" *ngIf="scrollTopButton">
+  <ion-fab-button color="secondary" (click)="scrollToTop()">
+    <ion-icon name="arrow-up"></ion-icon>
+  </ion-fab-button>
+</ion-fab>

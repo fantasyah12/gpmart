@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button fill="clear" (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="ion-no-padding">{{'Login'|translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form #loginForm="ngForm" class="form" (ngSubmit)="login()" *ngIf="config.showLoginForm">
+    <ion-item>
+      <ion-label position="floating">{{'Email'|translate}}
+      </ion-label>
+      <ion-input type="email" email pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" name="email"
+        [(ngModel)]="formData.email" required>
+      </ion-input>
+    </ion-item>
+    <ion-text class="helptext"> * {{"invalid email"|translate}}</ion-text>
+    <ion-item>
+      <ion-label position="floating">{{'Password'|translate}}</ion-label>
+      <ion-input type="password" name="password" [(ngModel)]="formData.password" required>
+      </ion-input>
+    </ion-item>
+    <ion-text class="helptext"> * {{"required"|translate}}</ion-text>
+
+    <ion-item lines="none" *ngIf="errorMessage!=''">
+      <ion-text color="danger">
+        {{errorMessage| translate}}
+      </ion-text>
+    </ion-item>
+
+
+    <ion-button [disabled]="!loginForm.form.valid" class=" ion-margin-top" color="secondary" expand="full"
+      type="submit">
+      {{ 'Login' | translate }}
+    </ion-button>
+
+  </form>
+  <ion-button *ngIf="config.enablePhoneLogin" class="ion-margin-top" color="secondary" expand="full"
+    (click)="phoneLogin()">
+    {{ 'Login with' | translate }}
+    <ion-icon name="call" class="ion-padding-start"></ion-icon>
+  </ion-button>
+  <ion-button expand="full" *ngIf="config.fbButton==1" class=" ion-margin-top fb-button" (click)="facebookLogin()">
+    {{ 'Login with' | translate }}
+    <ion-icon name="logo-facebook" class="ion-padding-start"></ion-icon>
+  </ion-button>
+  <ion-button color="danger" expand="full" class="ion-margin-top" *ngIf="config.googleButton==1"
+    (click)="googleLogin()">
+    {{ 'Login with' | translate }}
+    <ion-icon name="logo-google" class="ion-padding-start"></ion-icon>
+  </ion-button>
+  <ion-button expand="full" fill="clear" color="dark" (click)="openForgetPasswordPage()">{{ "I've forgotten my
+    password?" | translate }}</ion-button>
+  <ion-button expand="block" fill="outline" class=" ion-margin-top register-button" (click)="openSignUpPage()">
+    {{ 'Register' | translate }}</ion-button>
+  <ion-button expand="full" class=" ion-margin-top"
+    [disabled]="shared.cartProducts.length==0 || hideGuestLogin" (click)="guestLogin()">
+    {{'Continue as a Guest'|translate}}</ion-button>
+  <!-- *ngIf="config.guestCheckOut && hideGuestLogin" -->
+</ion-content>

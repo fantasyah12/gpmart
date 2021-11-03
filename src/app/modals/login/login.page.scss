@@ -1,0 +1,33 @@
+// For image design
+ion-img {
+  height: 150px;
+  opacity: 0.1;
+}
+
+// For Form
+form {
+  padding-top: 28px;
+  ion-item {
+    --padding-start: 0;
+    --background: var(--ion-background-color);
+    ion-label {
+      color: rgba(var(--ion-text-color-rgb), 0.5);
+    }
+  }
+  ion-button {
+    text-transform: uppercase;
+  }
+}
+
+// For Login, Facebook, Register Buttons
+
+.register-button {
+  color: black;
+  --border-color: black;
+  --border-width: thin;
+}
+
+.fb-button {
+  --background: #3b5998;
+  color: white;
+}

@@ -1,0 +1,32 @@
+ion-content {
+  // For image design
+  ion-avatar {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    height: 100px;
+    width: 100px;
+  }
+
+  // For Form
+  form {
+    ion-item {
+      --padding-start: 0;
+      --background: var(--ion-background-color);
+      ion-label {
+        color: rgba(var(--ion-text-color-rgb), 0.5);
+      }
+    }
+    ion-list-header {
+      ion-label {
+        color: rgba(var(--ion-text-color-rgb), 0.5);
+      }
+    }
+    p {
+      font-size: 14px;
+    }
+    ion-button {
+      text-transform: uppercase;
+    }
+  }
+}
